@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
 public class Main {
 	public static void main(String[] args) {
 				
@@ -32,12 +33,15 @@ public class Main {
 			if(cmd.equals("article write")) {
 				int id = lastArticleId +1;
 				lastArticleId =id;
+				String regDate = Util.getNowDateStr();
+				System.out.println("regDate : " + regDate);
+				
 				System.out.printf("제목 : ");
 				String title = sc.nextLine();
 				System.out.printf("내용 : ");
 				String body = sc.nextLine();
 								
-				Article article = new Article(id, title, body);
+				Article article = new Article(id, regDate, title, body);
 				 
 				articles.add(article);	
 								
@@ -51,14 +55,12 @@ public class Main {
 				
 				}
 				
-				System.out.println("번호 | 제목");
-				
+				System.out.println("번호  | 제목  | 날짜 ");				
 				for(int i = articles.size() -1; i >= 0; i--) {
-					Article article = articles.get(i);
-					
-					System.out.printf("%d | %s\n", article.id, article.title);
+					Article article = articles.get(i) ;					
+					System.out.printf("%d | %s | %s \n", article.id, article.title, article.regDate);
 				}
-			}else if(cmd.startsWith("article detail ")) {
+			}else if (cmd.startsWith("article detail ")) {
 				
 				String[] cmdBits = cmd.split("");
 				int id = Integer.parseInt(cmdBits[2]);
@@ -80,7 +82,7 @@ public class Main {
 					continue;
 				}
 					System.out.printf("번호 : %d\n", foundArticle.id);
-					System.out.printf("날짜 : %s\n", "2022-12-12 12:12:12");
+					System.out.printf("날짜 : %s\n", foundArticle.regDate);
 					System.out.printf("제목 : %s\n", foundArticle.title);
 					System.out.printf("내용 : %s\n", foundArticle.body);					
 								
@@ -88,21 +90,19 @@ public class Main {
 
 				String[] cmdBits = cmd.split(" ");
 				int id = Integer.parseInt(cmdBits[2]);
-
-				Article foundArticle = null;
+				
 				int foundIndex = -1;
 
 				for(int i = 0; i < articles.size(); i++) {
 					Article article = articles.get(i);
 
-					if(article.id == id) {
-						foundArticle = article;
+					if(article.id == id) {						
 						foundIndex = i;
 						break;
 					}
 				}
 
-				if(foundArticle == null) {
+				if(foundIndex == -1) {
 					System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
 					continue;
 				} 
@@ -120,18 +120,21 @@ public class Main {
 		
 		sc.close();
 				
-	}
+		}
 }
 
 class Article{
 	int id;
+	String regDate;
 	String title;
 	String body;
 	
-	Article(int id, String title, String body){
+	Article(int id, String regDate, String title, String body){
 		this.id = id;
 		this.title = title;
-		this.body = body;	
+		this.body = body;
+		this.regDate = regDate;
+		
 	}
 }
 
