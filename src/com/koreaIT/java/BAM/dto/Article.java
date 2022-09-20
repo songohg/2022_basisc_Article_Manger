@@ -1,17 +1,17 @@
 package com.koreaIT.java.BAM.dto;
 
 public class Article {	
-		int id;
-		String regDate;
-		String title;
-		String body;
-		int viewCnt;
+		public int id;
+		public String regDate;
+		public String title;
+		public String body;
+		public int viewCnt;
 		
-		Article(int id, String regDate, String title, String body){
+	public Article(int id, String regDate, String title, String body){
 			this(id, regDate, title, body, 0);	
 		}
 
-		Article(int id, String regDate, String title, String  body, int viewCnt) {
+	public Article(int id, String regDate, String title, String  body, int viewCnt) {
 			this.id = id;
 			this.title = title;
 			this.body = body;
