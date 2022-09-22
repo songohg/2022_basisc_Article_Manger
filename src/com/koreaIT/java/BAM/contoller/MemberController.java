@@ -6,15 +6,27 @@ import java.util.Scanner;
 import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
-public class MemberController {
+public class MemberController extends Controller {
 	List<Member> members; 
 	Scanner sc;
+	String cmd;
 
 	public MemberController(List<Member> members, Scanner sc) {
 		 this.members = members;
 		 this.sc =sc;
 	}
 
+	@Override
+	public void doAction(String cmd, String methodName) {
+		this.cmd = cmd;
+		
+		switch(methodName) {
+		case "join" :
+			doJoin();
+			break;
+		}
+	}
+	
 	public void doJoin() {
 		int id = members.size() + 1;
 		String regDate = Util.getNowDateStr();
@@ -30,8 +42,7 @@ public class MemberController {
 			}
 			System.out.printf("%s은(는) 사용가는한 아이디입니다.\n", loginId);
 			break;
-		}
-				
+		}				
 		
 		String loginPw = null;
 		String loginPwChk = null;
@@ -57,10 +68,8 @@ public class MemberController {
 		members.add(member);
 
 		System.out.printf("%s회원님 환영합니다\n", loginId);
-
-		
-	}
 	
+	}
 	
 	private boolean loginIdChk(String loginId) {
 		int index = getMemberIndexByLoginId(loginId);

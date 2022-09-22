@@ -5,17 +5,42 @@ import java.util.List;
 import java.util.Scanner;
 
 import com.koreaIT.java.BAM.dto.Article;
-import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 	List<Article> articles; 
 	Scanner sc;
-
+	String cmd;
+	
 	public ArticleController(List<Article> articles, Scanner sc) {
 		 this.articles = articles;
 		 this.sc =sc;
 	}
+		
+	@Override
+	public void doAction(String cmd, String methodName) {
+		this.cmd = cmd;
+		
+		switch(methodName) {
+		case "write" :
+			doWrite();
+			break;
+		case "list" :
+			showList();
+			break;
+		case "detail" :
+			showDetail();
+			break;
+		case "modify" :
+			doModify();
+			break;
+		case "delet" :
+			doDelete();
+			break;
+			
+		}
+	}
+	
 	public void doWrite() {
 		int id = articles.size() + 1; 
 		String regDate = Util.getNowDateStr();
@@ -30,7 +55,7 @@ public class ArticleController {
 
 		System.out.printf("%d번 글이 생성되었습니다\n", id);
 	}
-	public void showList(String cmd) {
+	public void showList() {
 		if (articles.size() == 0) {
 			System.out.println("게시물이 없습니다");
 			return;
@@ -66,9 +91,15 @@ public class ArticleController {
 		}
 		
 	}
-	public void showDetail(String cmd) {
-
+	
+	public void showDetail() {
 		String[] cmdBits = cmd.split(" ");
+		
+		if(cmdBits.length == 2) {
+			System.out.println("명령어를 확인해주세요");
+			return;
+		}
+		
 		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
@@ -87,9 +118,14 @@ public class ArticleController {
 		System.out.printf("조회 : %d\n", foundArticle.viewCnt);	
 	}
 	
-	public void doModify(String cmd) {
-
+	public void doModify() {
 		String[] cmdBits = cmd.split(" ");
+		
+		if(cmdBits.length == 2) {
+			System.out.println("명령어를 확인해주세요");
+			return;
+		}
+		
 		int id = Integer.parseInt(cmdBits[2]);
 
 		Article foundArticle = getArticleById(id);
@@ -110,9 +146,14 @@ public class ArticleController {
 		System.out.printf("%d번글이 수정되었습니다\n", id);
 		
 	}
-	public void doDelete(String cmd) {
-
+	public void doDelete() {
 		String[] cmdBits = cmd.split(" ");
+		
+		if(cmdBits.length == 2) {
+			System.out.println("명령어를 확인해주세요");
+			return;
+		}
+		
 		int id = Integer.parseInt(cmdBits[2]);
 
 		int foundIndex = getArticleIndexById(id);
@@ -145,5 +186,7 @@ public class ArticleController {
 			return articles.get(index);
 		}
 		return null;
-		}
-}
+		}	
+	}
+	
+
