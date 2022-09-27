@@ -6,7 +6,7 @@ import com.koreaIT.java.BAM.dto.Member;
 
 	 public static Member loginedMember;
 	 
-	 public boolean isLogined() {
+	 public static boolean isLogined() {
 		return loginedMember != null;
 	}
 		

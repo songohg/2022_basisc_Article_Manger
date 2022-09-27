@@ -44,8 +44,7 @@ public class App {
 			String controllerName =cmdBits[0];
 			String methodName =cmdBits[1];
 			
-			Controller controller = null;
-			
+			Controller controller = null;			
 			if(controllerName.equals("article")) {
 				controller = articleController;				
 			}else if(controllerName.equals("member")) {
@@ -53,6 +52,28 @@ public class App {
 			}else {
 				System.out.println("존재하지 않는 명령어 입니다");
 				continue;
+			}
+			
+	//		String actionName = controllerName + "/" + methodName;
+			
+			switch(methodName) {
+			case " wrtie":
+			case " modify":
+			case " delete":
+			case " logout":
+			case " profile":
+				if(Controller.isLogined() == false) {
+					System.out.println("로그인 후 이용해주세요");
+					continue;
+				}
+				break;
+			case " login":
+			case " join":
+				if(Controller.isLogined()) {
+					System.out.println("로그인 후 이용해주세요");
+					continue;
+				}
+				break;
 			}
 			
 			controller.doAction(cmd, methodName);

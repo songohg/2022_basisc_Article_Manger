@@ -22,11 +22,7 @@ public class ArticleController extends Controller {
 		this.cmd = cmd;
 		
 		switch(methodName) {
-		case "write" :
-			if(isLogined() == false) {
-				System.out.println("로그인 후 이용해주세요");
-				break;
-			}
+		case "write" :				
 			doWrite();
 			break;
 		case "list" :
@@ -35,15 +31,12 @@ public class ArticleController extends Controller {
 		case "detail" :
 			showDetail();
 			break;
-		case "modify" :
+		case "modify" :			
 			doModify();
 			break;
-		case "delet" :
-			doDelete();
-			break;
-			default:
-				System.out.println("존재하지 않는 명령어 입니다");
-				break;
+		case"delete" :		
+			doDelete();		
+			System.out.println("존재하지 않는 명령어 입니다");
 		}
 	}
 	
@@ -120,7 +113,7 @@ public class ArticleController extends Controller {
 
 		System.out.printf("번호 : %d\n", foundArticle.id);
 		System.out.printf("날짜 : %s\n", foundArticle.regDate);
-		System.out.printf("작성자: %s\n", foundArticle.memberId);
+		System.out.printf("작성자ㅁ: %s\n", foundArticle.memberId);
 		System.out.printf("제목 : %s\n", foundArticle.title);
 		System.out.printf("내용 : %s\n", foundArticle.body);
 		System.out.printf("조회 : %d\n", foundArticle.viewCnt);	
@@ -142,7 +135,11 @@ public class ArticleController extends Controller {
 			System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
 			return;
 		}
-
+		
+		if(foundArticle.memberId == loginedMember.id) {	
+			System.out.println("권한이 없습니다");
+			return;
+		}
 		System.out.printf("수정할 제목 : ");
 		String title = sc.nextLine();
 		System.out.printf("수정할 내용 : ");
@@ -164,14 +161,19 @@ public class ArticleController extends Controller {
 		
 		int id = Integer.parseInt(cmdBits[2]);
 
-		int foundIndex = getArticleIndexById(id);
+		Article foundArticle = getArticleById(id);
 
-		if (foundIndex == -1) {
+		if (foundArticle == null) {
 			System.out.printf("%d번 게시물은 존재하지 않습니다\n", id);
 			return;
 		}
+		
+		if(foundArticle.memberId == loginedMember.id) {	
+			System.out.println("권한이 없습니다");
+			return;
+		}
 
-		articles.remove(foundIndex);
+		articles.remove(foundArticle);
 
 		System.out.printf("%d번 게시물이 삭제되었습니다\n", id);		
 	}
