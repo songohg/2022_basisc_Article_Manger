@@ -50,12 +50,29 @@ public class MemberController extends Controller {
 	}
 
 	private void doLogin() {
-		System.out.printf("로그인 아이디 : ");
-		String loginId = sc.nextLine();
-		System.out.printf("로그인 비밀번호 : ");
-		String loginPw =sc.nextLine();
+		Member member = null;
+		String loginPw = null;
+		while(true) {
+			System.out.printf("로그인 아이디 : ");
+			String loginId = sc.nextLine();
 		
-		Member member = getMemberByLoginId(loginId);
+		if(loginId.length()== 0) {
+			System.out.println("로그인 아이디를 입력해주세요");
+			continue;			
+		}
+		
+		while(true) {
+			System.out.printf("로그인 비밀번호 : ");
+			loginPw =sc.nextLine().trim();
+				
+			if(loginPw.length()== 0) {
+			System.out.println("로그인 비밀번호를 입력해주세요");
+			continue;
+		  }
+		  break;
+		}
+			
+		member = getMemberByLoginId(loginId);
 		
 		if(member == null) {
 			System.out.println("일치하는 회원이 없습니다"); 
@@ -65,12 +82,14 @@ public class MemberController extends Controller {
 		if(member.loginPw.equals(loginPw)== false) {
 			System.out.println("비밀번호를 확인해주세요");
 			return;
+		  }
+		 break;
 		}
 		
 		loginedMember = member;
 		System.out.printf("로그인 성공! %s님 환영합니다\n", loginedMember.name);
-	}
-
+	 }
+	
 	private void doJoin() {
 		int id = Container.memberDao.getNewId();
 		String regDate = Util.getNowDateStr();
