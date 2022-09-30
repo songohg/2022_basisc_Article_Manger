@@ -5,18 +5,19 @@ import java.util.Scanner;
 
 import com.koreaIT.java.BAM.container.Container;
 import com.koreaIT.java.BAM.dto.Article;
-import com.koreaIT.java.BAM.dto.Member;
 import com.koreaIT.java.BAM.service.ArticleService;
+import com.koreaIT.java.BAM.service.MemberService;
 import com.koreaIT.java.BAM.util.Util;
 
 public class ArticleController extends Controller {
 	private Scanner sc;
-	private String cmd;
-	
+	private String cmd;	
 	private ArticleService articleService;
+	private MemberService memberService;
 	
 	public ArticleController(Scanner sc) {
-		articleService = Container.articleService;
+		this.articleService = Container.articleService;
+		this.memberService = Container.memberService;
 		 this.sc =sc;
 	}
 		
@@ -76,16 +77,7 @@ public class ArticleController extends Controller {
 		for (int i = forPrintArticles.size() - 1; i >= 0; i--) {
 			Article article = forPrintArticles.get(i);
 			
-			String writerName = null;
-			
-			List<Member> members = Container.memberDao.members;
-			
-			for(Member member : members) {
-				if(article.memberId == member.id) {
-					writerName = member.name;
-					break;
-				}
-			}
+			String writerName = memberService.getWriterName(article.memberId);
 			
 			System.out.printf("%d	|	%s	|	%s	|	%s	|	%d\n", article.id, article.title, article.regDate,writerName,
 					article.viewCnt);
@@ -110,16 +102,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 
-		String writerName = null;
-		
-		List<Member> members = Container.memberDao.members;
-		
-		for(Member member : members) {
-			if(foundArticle.memberId == member.id) {
-				writerName = member.name;
-				break;
-			}
-		}
+		String writerName = memberService.getWriterName(foundArticle.memberId);
 		
 		foundArticle.addViewCnt();
 
@@ -181,7 +164,7 @@ public class ArticleController extends Controller {
 			return;
 		}
 		
-		if(foundArticle.memberId == loginedMember.id) {	
+		if(foundArticle.memberId != loginedMember.id) {	
 			System.out.println("권한이 없습니다");
 			return;
 		}
